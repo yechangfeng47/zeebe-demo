@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1h27eb0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.8.0">
+  <bpmn:process id="timeout" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_09rhxp9</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_09rhxp9" sourceRef="StartEvent_1" targetRef="Task_1120cew" />
+    <bpmn:serviceTask id="Task_1120cew" name="pay order">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="par_order" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_09rhxp9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_10smqz9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="IntermediateThrowEvent_1ajp51x" name="timeout 3S" attachedToRef="Task_1120cew">
+      <bpmn:outgoing>SequenceFlow_1ipkakx</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0sehxrs">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT3S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_10smqz9" sourceRef="Task_1120cew" targetRef="Task_03jpxt6" />
+    <bpmn:serviceTask id="Task_03jpxt6" name="success">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="success" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_10smqz9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0x4y9nw</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_08sbzln">
+      <bpmn:incoming>SequenceFlow_15byt1c</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0x4y9nw" sourceRef="Task_03jpxt6" targetRef="ExclusiveGateway_1ta7ay6" />
+    <bpmn:sequenceFlow id="SequenceFlow_1ipkakx" sourceRef="IntermediateThrowEvent_1ajp51x" targetRef="Task_0tqya7x" />
+    <bpmn:serviceTask id="Task_0tqya7x" name="timeout handler">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="timeout_handler" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1ipkakx</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1txoxfm</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1ta7ay6">
+      <bpmn:incoming>SequenceFlow_1txoxfm</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0x4y9nw</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_15byt1c</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_1txoxfm" sourceRef="Task_0tqya7x" targetRef="ExclusiveGateway_1ta7ay6" />
+    <bpmn:sequenceFlow id="SequenceFlow_15byt1c" sourceRef="ExclusiveGateway_1ta7ay6" targetRef="EndEvent_08sbzln" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="timeout">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_09rhxp9_di" bpmnElement="SequenceFlow_09rhxp9">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1uwi4e1_di" bpmnElement="Task_1120cew">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BoundaryEvent_1hhiuvc_di" bpmnElement="IntermediateThrowEvent_1ajp51x">
+        <dc:Bounds x="322" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="343" y="183" width="53" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_10smqz9_di" bpmnElement="SequenceFlow_10smqz9">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="420" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0qyut6c_di" bpmnElement="Task_03jpxt6">
+        <dc:Bounds x="420" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_08sbzln_di" bpmnElement="EndEvent_08sbzln">
+        <dc:Bounds x="652" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0x4y9nw_di" bpmnElement="SequenceFlow_0x4y9nw">
+        <di:waypoint x="520" y="120" />
+        <di:waypoint x="555" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ipkakx_di" bpmnElement="SequenceFlow_1ipkakx">
+        <di:waypoint x="340" y="178" />
+        <di:waypoint x="340" y="260" />
+        <di:waypoint x="420" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_00qsnf7_di" bpmnElement="Task_0tqya7x">
+        <dc:Bounds x="420" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1ta7ay6_di" bpmnElement="ExclusiveGateway_1ta7ay6" isMarkerVisible="true">
+        <dc:Bounds x="555" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1txoxfm_di" bpmnElement="SequenceFlow_1txoxfm">
+        <di:waypoint x="520" y="260" />
+        <di:waypoint x="580" y="260" />
+        <di:waypoint x="580" y="145" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_15byt1c_di" bpmnElement="SequenceFlow_15byt1c">
+        <di:waypoint x="605" y="120" />
+        <di:waypoint x="652" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

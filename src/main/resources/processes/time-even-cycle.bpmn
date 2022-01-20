@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_1l5d44b" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.10.0">
+  <bpmn:process id="time-even-cycle" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_0z34z1r" sourceRef="Event_0kkl20k" targetRef="Activity_1tyjzn5" />
+    <bpmn:serviceTask id="Activity_1tyjzn5" name="check_data">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="check_data" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0z34z1r</bpmn:incoming>
+      <bpmn:outgoing>Flow_1x43r4l</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_0xsxe5r">
+      <bpmn:incoming>Flow_1x43r4l</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1x43r4l" sourceRef="Activity_1tyjzn5" targetRef="Event_0xsxe5r" />
+    <bpmn:startEvent id="Event_0kkl20k">
+      <bpmn:outgoing>Flow_0z34z1r</bpmn:outgoing>
+    </bpmn:startEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="time-even-cycle">
+      <bpmndi:BPMNEdge id="Flow_0z34z1r_di" bpmnElement="Flow_0z34z1r">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1x43r4l_di" bpmnElement="Flow_1x43r4l">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="392" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1nykrn2_di" bpmnElement="Activity_1tyjzn5">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0xsxe5r_di" bpmnElement="Event_0xsxe5r">
+        <dc:Bounds x="392" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1m27cna_di" bpmnElement="Event_0kkl20k">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
