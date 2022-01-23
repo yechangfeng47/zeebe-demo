@@ -23,8 +23,8 @@ class ZeebeDemoTimeEvenCyclelTests extends ZeebeDemoBaseTests{
 	@Test
 	public void deployTimeEvenCycleTest() {
 		DeploymentEvent deployment = client.newDeployCommand()
-				.addResourceFromClasspath("time-even-cycle.bpmn").send().join(3, TimeUnit.SECONDS);
-		String bpmnProcessId = deployment.getWorkflows().get(0).getBpmnProcessId();
+				.addResourceFromClasspath("processes/time-even-cycle.bpmn").send().join(3, TimeUnit.SECONDS);
+		String bpmnProcessId = deployment.getProcesses().get(0).getBpmnProcessId();
 		System.out.println(bpmnProcessId);
 		assert bpmnProcessId.equals("time-even-cycle");
 	}

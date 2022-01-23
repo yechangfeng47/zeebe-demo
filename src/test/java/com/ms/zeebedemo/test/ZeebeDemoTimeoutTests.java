@@ -2,7 +2,7 @@ package com.ms.zeebedemo.test;
 
 import com.google.common.collect.Maps;
 import io.zeebe.client.api.response.DeploymentEvent;
-import io.zeebe.client.api.response.WorkflowInstanceEvent;
+import io.zeebe.client.api.response.ProcessInstanceEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -28,8 +28,8 @@ class ZeebeDemoTimeoutTests extends ZeebeDemoBaseTests{
 	@Test
 	public void deployTimeoutTest() {
 		DeploymentEvent deployment = client.newDeployCommand()
-				.addResourceFromClasspath("timeout.bpmn").send().join(3, TimeUnit.SECONDS);
-		String bpmnProcessId = deployment.getWorkflows().get(0).getBpmnProcessId();
+				.addResourceFromClasspath("processes/timeout.bpmn").send().join(3, TimeUnit.SECONDS);
+		String bpmnProcessId = deployment.getProcesses().get(0).getBpmnProcessId();
 		System.out.println(bpmnProcessId);
 		assert bpmnProcessId.equals("timeout");
 	}
@@ -112,9 +112,9 @@ class ZeebeDemoTimeoutTests extends ZeebeDemoBaseTests{
 	public void createInstanceTest() {
 		Map<String, Object> params = Maps.newHashMap();
 		params.put("orderId", "123456");
-		WorkflowInstanceEvent workflowInstance = client.newCreateInstanceCommand().bpmnProcessId("timeout").latestVersion().variables(params)
+		ProcessInstanceEvent workflowInstance = client.newCreateInstanceCommand().bpmnProcessId("timeout").latestVersion().variables(params)
 				.send().join();
-		System.out.println("workflowInstanceKey: " + workflowInstance.getWorkflowInstanceKey());
+		System.out.println("workflowInstanceKey: " + workflowInstance.getProcessInstanceKey());
 	}
 
 }

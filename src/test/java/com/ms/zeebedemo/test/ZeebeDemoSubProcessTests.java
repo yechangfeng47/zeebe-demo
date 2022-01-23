@@ -2,7 +2,7 @@ package com.ms.zeebedemo.test;
 
 import com.google.common.collect.Maps;
 import io.zeebe.client.api.response.DeploymentEvent;
-import io.zeebe.client.api.response.WorkflowInstanceEvent;
+import io.zeebe.client.api.response.ProcessInstanceEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -29,8 +29,8 @@ class ZeebeDemoSubProcessTests extends ZeebeDemoBaseTests{
 	@Test
 	public void deployOrderProcessParallelTest() {
 		DeploymentEvent deployment = client.newDeployCommand()
-				.addResourceFromClasspath("sub-process.bpmn").send().join(3, TimeUnit.SECONDS);
-		String bpmnProcessId = deployment.getWorkflows().get(0).getBpmnProcessId();
+				.addResourceFromClasspath("processes/sub-process.bpmn").send().join(3, TimeUnit.SECONDS);
+		String bpmnProcessId = deployment.getProcesses().get(0).getBpmnProcessId();
 		System.out.println(bpmnProcessId);
 		assert bpmnProcessId.equals("sub-process");
 	}
@@ -100,9 +100,9 @@ class ZeebeDemoSubProcessTests extends ZeebeDemoBaseTests{
 	public void createInstance1Test() {
 		Map<String, Object> params = Maps.newHashMap();
 		params.put("orderId", "123456");
-		WorkflowInstanceEvent workflowInstance = client.newCreateInstanceCommand().bpmnProcessId("sub-process").latestVersion().variables(params)
+		ProcessInstanceEvent workflowInstance = client.newCreateInstanceCommand().bpmnProcessId("sub-process").latestVersion().variables(params)
 				.send().join();
-		System.out.println("workflowInstanceKey: " + workflowInstance.getWorkflowInstanceKey());
+		System.out.println("workflowInstanceKey: " + workflowInstance.getProcessInstanceKey());
 	}
 
 	@Test
